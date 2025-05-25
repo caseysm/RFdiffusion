@@ -18,3 +18,14 @@ tests/tests_*
 # Claude Code documentation
 CLAUDE.md
 .claude/
+
+# RFdiffusion inference outputs
+*.pdb
+*.trb
+traj/
+outputs/
+samples/
+*_output_*.pdb
+*_output_*.trb
+test_*
+*_test_*

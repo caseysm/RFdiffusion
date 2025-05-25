@@ -119,7 +119,9 @@ def main(conf: HydraConfig) -> None:
         plddt_stack = torch.stack(plddt_stack)
 
         # Save outputs
-        os.makedirs(os.path.dirname(out_prefix), exist_ok=True)
+        out_dir = os.path.dirname(out_prefix)
+        if out_dir:  # Only create directory if there's actually a directory path
+            os.makedirs(out_dir, exist_ok=True)
         final_seq = seq_stack[-1]
 
         # Output glycines, except for motif region
@@ -160,9 +162,8 @@ def main(conf: HydraConfig) -> None:
 
         if sampler.inf_conf.write_trajectory:
             # trajectory pdbs
-            traj_prefix = (
-                os.path.dirname(out_prefix) + "/traj/" + os.path.basename(out_prefix)
-            )
+            base_dir = os.path.dirname(out_prefix) if os.path.dirname(out_prefix) else "."
+            traj_prefix = os.path.join(base_dir, "traj", os.path.basename(out_prefix))
             os.makedirs(os.path.dirname(traj_prefix), exist_ok=True)
 
             out = f"{traj_prefix}_Xt-1_traj.pdb"
