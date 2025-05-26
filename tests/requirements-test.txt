@@ -1,0 +1,8 @@
+# Testing requirements for auto-detection system
+
+# Core testing framework
+pytest>=7.0.0
+pytest-mock>=3.6.0
+pytest-cov>=4.0.0
+
+# Note: unittest.mock, tempfile, json, pathlib, io, sys, os are all part of Python standard library

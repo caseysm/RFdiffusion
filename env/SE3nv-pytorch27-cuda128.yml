@@ -1,0 +1,54 @@
+name: SE3nv-pytorch27-cuda128
+channels:
+  - defaults
+  - conda-forge
+  - pytorch
+  - nvidia
+dependencies:
+  - python=3.11
+  
+  # CUDA 12.8 toolkit for PyTorch 2.7 compatibility
+  - nvidia::cuda-toolkit=12.8
+  
+  # Build tools for DGL source compilation
+  - cmake>=3.18
+  - make
+  - gcc_linux-64
+  - gxx_linux-64
+  - git
+  
+  # Core scientific stack - let conda handle versions
+  - numpy>=2.0
+  - scipy>=1.14
+  - matplotlib>=3.5
+  
+  - pip
+  - pip:
+    # PyTorch 2.7 ecosystem with CUDA 12.8 (use specific versions for stability)
+    - torch==2.7.0 --index-url https://download.pytorch.org/whl/cu128
+    - torchvision==0.22.0 --index-url https://download.pytorch.org/whl/cu128
+    - torchaudio==2.7.0 --index-url https://download.pytorch.org/whl/cu128
+    
+    # Configuration and utilities - latest versions
+    - hydra-core>=1.3.0
+    - omegaconf>=2.2.0
+    - pyrsistent>=0.20.0
+    
+    # Scientific extras
+    - biotite>=0.37.0
+    
+    # Monitoring and utilities
+    - wandb>=0.15.0
+    - pynvml>=11.5.0
+    - decorator>=5.1.1
+    - tqdm
+    - requests
+    
+    # SE3NN - use latest available version
+    - e3nn>=0.5.1,<0.6.0
+    
+    # DGL will be installed from source via upgrade script
+    # (PyTorch 2.7 wheels may not be available yet)
+    
+    # Local SE3-Transformer
+    - se3-transformer @ file:///home/casey/Desktop/repos/RFdiffusion/env/SE3Transformer

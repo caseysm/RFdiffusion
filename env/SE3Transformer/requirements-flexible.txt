@@ -1,0 +1,19 @@
+# SE3-Transformer requirements - flexible versions
+# Compatible with multiple PyTorch and dependency versions
+
+# Core SE3Transformer dependencies - relaxed bounds
+e3nn>=0.5.1
+wandb>=0.15.0
+pynvml>=11.5.0
+decorator>=5.1.1
+
+# NVIDIA DLLogger - stable version
+git+https://github.com/NVIDIA/dllogger@v1.0.0#egg=dllogger
+
+# Scientific dependencies - flexible versions
+numpy>=1.21.0
+scipy>=1.9.0
+
+# Optional but recommended
+opt-einsum>=3.3.0
+sympy>=1.10.0

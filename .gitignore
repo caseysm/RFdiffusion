@@ -1,4 +1,28 @@
+# Python cache files
 *.py[cod]
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# RFdiffusion package
 rfdiffusion.egg-info
 
 models/
@@ -14,6 +38,15 @@ tests/reference_outputs/
 tests/target_folds
 tests/tim_barrel_scaffold
 tests/tests_*
+
+# Test coverage reports
+htmlcov/
+.coverage
+*.xml
+
+# Auto-detection system files
+system_config.json
+*.json
 
 # Claude Code documentation
 CLAUDE.md
