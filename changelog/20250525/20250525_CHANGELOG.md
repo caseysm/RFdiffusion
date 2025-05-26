@@ -177,9 +177,9 @@ pip install -e .[stable]
 ```bash
 pip install -e .[bleeding-edge]
 ```
-- PyTorch: ≥2.4.0 (cutting edge)
-- DGL: ≥2.4.0 (source build)
-- NumPy: ≥2.0.0 (modern)
+- PyTorch: >=2.4.0 (cutting edge)
+- DGL: >=2.4.0 (source build)
+- NumPy: >=2.0.0 (modern)
 
 ##### `[dgl-source]` - Build dependencies
 ```bash
@@ -298,10 +298,10 @@ dependencies:
 ```
 
 **Key Changes:**
-- **Python**: 3.9 → 3.11 (for better PyTorch 2.x compatibility)
-- **PyTorch**: 1.9 → 2.3.0 (stable version with DGL 1.1.3 compatibility)
-- **CUDA Toolkit**: 11.1 → 12.x (using CUDA 12.1 wheels, forward compatible with 12.9)
-- **DGL**: cuda11.1 → 1.1.3 (avoids torchdata dependency issues)
+- **Python**: 3.9  ->  3.11 (for better PyTorch 2.x compatibility)
+- **PyTorch**: 1.9  ->  2.3.0 (stable version with DGL 1.1.3 compatibility)
+- **CUDA Toolkit**: 11.1  ->  12.x (using CUDA 12.1 wheels, forward compatible with 12.9)
+- **DGL**: cuda11.1  ->  1.1.3 (avoids torchdata dependency issues)
 - **Installation Method**: Using NVIDIA's conda channel for CUDA toolkit and PyTorch's CUDA 12.1 wheels
 
 #### 2. SE3Transformer Requirements (`env/SE3Transformer/requirements.txt`)
@@ -325,10 +325,10 @@ decorator>=5.1.1
 ```
 
 **Key Changes:**
-- **e3nn**: 0.3.3 → ≥0.5.1 (PyTorch 2.x compatibility)
-- **wandb**: 0.12.0 → ≥0.17.0 (recent features and bug fixes)
-- **pynvml**: 11.0.0 → ≥11.5.0 (better NVIDIA driver compatibility)
-- **decorator**: 5.1.0 → ≥5.1.1 (minor updates)
+- **e3nn**: 0.3.3  ->  >=0.5.1 (PyTorch 2.x compatibility)
+- **wandb**: 0.12.0  ->  >=0.17.0 (recent features and bug fixes)
+- **pynvml**: 11.0.0  ->  >=11.5.0 (better NVIDIA driver compatibility)
+- **decorator**: 5.1.0  ->  >=5.1.1 (minor updates)
 
 ### Compatibility Strategy
 
@@ -387,7 +387,7 @@ bash scripts/setup/download_models.sh models/
 
 #### 4. PyTorch 2.7 Breaking Changes
 **Issue**: PyTorch 2.7 may have API changes from 1.9
-**Solution**: The updated dependencies (e3nn ≥0.5.1) should be compatible with PyTorch 2.x
+**Solution**: The updated dependencies (e3nn >=0.5.1) should be compatible with PyTorch 2.x
 
 ### Testing Recommendations
 
@@ -695,12 +695,6 @@ Implemented a clean, professional setup architecture with intelligent orchestrat
 
 ### Professional Code Standards
 
-#### Emoji Removal Policy
-- **Complete emoji removal** from all scripts, documentation, and code comments
-- **Professional appearance** maintained across entire codebase  
-- **Descriptive text alternatives** replace visual indicators
-- **Documentation updated** to reflect professional standards
-
 #### Code Organization
 - **Clean separation of concerns** between detection, orchestration, and execution
 - **Clear interfaces** between components using command-based communication
@@ -709,18 +703,18 @@ Implemented a clean, professional setup architecture with intelligent orchestrat
 
 ### Clean Setup Architecture 
 
-#### Design Pattern: Detection → Commands → Execution
+#### Design Pattern: Detection  ->  Commands  ->  Execution
 ```bash
 setup.sh (orchestrator)
-    ↓ 
+     < /dev/null |  
 detect_system_config.py (hardware analysis)
-    ↓
+     < /dev/null | 
 Command generation (structured parameters)  
-    ↓
+     < /dev/null | 
 setup/setup_rfdiffusion.sh (environment setup)
-    ↓
+     < /dev/null | 
 setup.py install (package installation)
-    ↓  
+     < /dev/null |   
 pytest (verification testing)
 ```
 
@@ -744,9 +738,9 @@ bash setup.sh --skip-detection # Use stable fallback
 ```
 
 **Intelligent Fallbacks:**
-- Detection failure → stable configuration
-- Hardware incompatibility → clear error messages  
-- Missing dependencies → helpful installation instructions
+- Detection failure  ->  stable configuration
+- Hardware incompatibility  ->  clear error messages  
+- Missing dependencies  ->  helpful installation instructions
 
 #### Environment Specialist (`setup/setup_rfdiffusion.sh`)
 **Responsibilities:**
@@ -806,12 +800,12 @@ RFdiffusion/
 
 #### Updated Path References
 **Comprehensive updates across:**
-- ✅ `setup.sh` - Root wrapper script paths
-- ✅ `setup/setup_rfdiffusion.sh` - Internal path references  
-- ✅ `CLAUDE.md` - All documentation script paths
-- ✅ `tests/README.md` - Documentation links
-- ✅ All `examples/*.sh` - Updated from `../scripts/` → `../inference/`
-- ✅ `setup.py` - Script installation paths
+- [DONE] `setup.sh` - Root wrapper script paths
+- [DONE] `setup/setup_rfdiffusion.sh` - Internal path references  
+- [DONE] `CLAUDE.md` - All documentation script paths
+- [DONE] `tests/README.md` - Documentation links
+- [DONE] All `examples/*.sh` - Updated from `../scripts/`  ->  `../inference/`
+- [DONE] `setup.py` - Script installation paths
 
 #### Benefits of Reorganization
 - **Clear functional separation** - Setup vs runtime operations
@@ -826,10 +820,10 @@ RFdiffusion/
 **Intelligent torchdata avoidance:**
 ```bash
 # Strategic version selection:
-SE3nv.yml:          DGL 1.1.3 (no torchdata)           ✅ Most users
-SE3nv-flexible.yml: DGL 1.1.3 (no torchdata)           ✅ Modern builds
-SE3nv-cpu.yml:      DGL 2.4.0 (torchdata acceptable)   ✅ CPU-only
-SE3nv-pytorch27:    DGL 2.4+ source (controlled)       ✅ Bleeding-edge
+SE3nv.yml:          DGL 1.1.3 (no torchdata)           [DONE] Most users
+SE3nv-flexible.yml: DGL 1.1.3 (no torchdata)           [DONE] Modern builds
+SE3nv-cpu.yml:      DGL 2.4.0 (torchdata acceptable)   [DONE] CPU-only
+SE3nv-pytorch27:    DGL 2.4+ source (controlled)       [DONE] Bleeding-edge
 ```
 
 **Reasoning:**
@@ -849,7 +843,7 @@ SE3nv-pytorch27:    DGL 2.4+ source (controlled)       ✅ Bleeding-edge
 | `cpu-only` | `SE3nv-cpu.yml` | 2.7.0 | CPU | 2.4.0 | Universal fallback |
 
 **Benefits:**
-- **Sophisticated detection** → **Simple proven configurations**
+- **Sophisticated detection**  ->  **Simple proven configurations**
 - **No dynamic YAML generation** - All environments are tested
 - **Clear upgrade paths** - Users can move between configurations
 - **Maintenance efficiency** - Only 4 configurations to validate

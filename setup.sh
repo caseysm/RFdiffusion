@@ -1,6 +1,6 @@
 #!/bin/bash
 # RFdiffusion Setup - Main orchestrator
-# Detects platform → gets setup commands → executes installation
+# Detects platform  ->  gets setup commands  ->  executes installation
 
 set -e
 
@@ -32,15 +32,15 @@ print_step() {
 }
 
 print_status() {
-    echo -e "${GREEN}✅ $1${NC}"
+    echo -e "${GREEN}SUCCESS: $1${NC}"
 }
 
 print_error() {
-    echo -e "${RED}❌ $1${NC}"
+    echo -e "${RED}ERROR: $1${NC}"
 }
 
 print_info() {
-    echo -e "${BLUE}ℹ️  $1${NC}"
+    echo -e "${BLUE}INFO:  $1${NC}"
 }
 
 # Parse command line arguments
@@ -333,12 +333,12 @@ run_tests() {
 import torch
 import dgl  
 import rfdiffusion
-print(f'✅ PyTorch: {torch.__version__}')
-print(f'✅ CUDA available: {torch.cuda.is_available()}')
+print(f'SUCCESS: PyTorch: {torch.__version__}')
+print(f'SUCCESS: CUDA available: {torch.cuda.is_available()}')
 if torch.cuda.is_available():
-    print(f'✅ CUDA devices: {torch.cuda.device_count()}')
-print(f'✅ DGL: {dgl.__version__}')
-print('✅ All imports successful')
+    print(f'SUCCESS: CUDA devices: {torch.cuda.device_count()}')
+print(f'SUCCESS: DGL: {dgl.__version__}')
+print('SUCCESS: All imports successful')
 " || {
         print_error "Import test failed"
         return 1
@@ -360,7 +360,7 @@ print('✅ All imports successful')
 print_summary() {
     echo ""
     echo -e "${GREEN}================================================================${NC}"
-    echo -e "${GREEN} RFdiffusion Setup Complete! 🎉${NC}"
+    echo -e "${GREEN} RFdiffusion Setup Complete! Complete!${NC}"
     echo -e "${GREEN}================================================================${NC}"
     echo ""
     

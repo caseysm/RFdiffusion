@@ -33,10 +33,10 @@ bash setup_rfdiffusion.sh
 
 2. **Environment Mapping** (`setup_rfdiffusion.sh`)
    - Maps detection results to existing environment files:
-     - `bleeding-edge` → `SE3nv-pytorch27-cuda128.yml`
-     - `pytorch27-cuda121` → `SE3nv-flexible.yml`
-     - `stable/legacy` → `SE3nv.yml`
-     - `cpu-only` → `SE3nv-cpu.yml`
+     - `bleeding-edge`  ->  `SE3nv-pytorch27-cuda128.yml`
+     - `pytorch27-cuda121`  ->  `SE3nv-flexible.yml`
+     - `stable/legacy`  ->  `SE3nv.yml`
+     - `cpu-only`  ->  `SE3nv-cpu.yml`
 
 3. **Integrated Installation**
    - Creates conda environment using proven configurations

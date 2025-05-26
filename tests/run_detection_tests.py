@@ -32,9 +32,9 @@ def run_tests():
         try:
             module_suite = loader.loadTestsFromName(module_name)
             suite.addTest(module_suite)
-            print(f"✅ Loaded tests from {module_name}")
+            print(f"SUCCESS: Loaded tests from {module_name}")
         except Exception as e:
-            print(f"❌ Failed to load {module_name}: {e}")
+            print(f"ERROR: Failed to load {module_name}: {e}")
     
     # Run tests
     runner = unittest.TextTestRunner(verbosity=2)

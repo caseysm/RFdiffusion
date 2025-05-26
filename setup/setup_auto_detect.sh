@@ -15,24 +15,24 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-echo -e "${BLUE}🚀 RFdiffusion Auto-Detection Setup${NC}"
+echo -e "${BLUE}=> RFdiffusion Auto-Detection Setup${NC}"
 echo "=================================================="
 
 # Function to print colored output
 print_status() {
-    echo -e "${GREEN}✅ $1${NC}"
+    echo -e "${GREEN}SUCCESS: $1${NC}"
 }
 
 print_warning() {
-    echo -e "${YELLOW}⚠️  $1${NC}"
+    echo -e "${YELLOW}WARNING:  $1${NC}"
 }
 
 print_error() {
-    echo -e "${RED}❌ $1${NC}"
+    echo -e "${RED}ERROR: $1${NC}"
 }
 
 print_info() {
-    echo -e "${BLUE}ℹ️  $1${NC}"
+    echo -e "${BLUE}INFO:  $1${NC}"
 }
 
 # Check for required tools
@@ -312,7 +312,7 @@ if torch.cuda.is_available():
     print(f'CUDA devices: {torch.cuda.device_count()}')
     print(f'CUDA version: {torch.version.cuda}')
 print(f'DGL: {dgl.__version__}')
-print('✅ All imports successful')
+print('SUCCESS: All imports successful')
 "
     
     # Run quick inference test if we have models

@@ -32,19 +32,19 @@ print_step() {
 }
 
 print_status() {
-    echo -e "${GREEN}✅ $1${NC}"
+    echo -e "${GREEN}SUCCESS: $1${NC}"
 }
 
 print_warning() {
-    echo -e "${YELLOW}⚠️  $1${NC}"
+    echo -e "${YELLOW}WARNING:  $1${NC}"
 }
 
 print_error() {
-    echo -e "${RED}❌ $1${NC}"
+    echo -e "${RED}ERROR: $1${NC}"
 }
 
 print_info() {
-    echo -e "${BLUE}ℹ️  $1${NC}"
+    echo -e "${BLUE}INFO:  $1${NC}"
 }
 
 # Parse command line arguments
@@ -305,29 +305,29 @@ run_verification() {
     python -c "
 try:
     import torch
-    print(f'✅ PyTorch: {torch.__version__}')
-    print(f'✅ CUDA available: {torch.cuda.is_available()}')
+    print(f'SUCCESS: PyTorch: {torch.__version__}')
+    print(f'SUCCESS: CUDA available: {torch.cuda.is_available()}')
     if torch.cuda.is_available():
-        print(f'✅ CUDA devices: {torch.cuda.device_count()}')
-        print(f'✅ CUDA version: {torch.version.cuda}')
+        print(f'SUCCESS: CUDA devices: {torch.cuda.device_count()}')
+        print(f'SUCCESS: CUDA version: {torch.version.cuda}')
 except ImportError as e:
-    print(f'❌ PyTorch import failed: {e}')
+    print(f'ERROR: PyTorch import failed: {e}')
     exit(1)
 
 try:
     import dgl
-    print(f'✅ DGL: {dgl.__version__}')
+    print(f'SUCCESS: DGL: {dgl.__version__}')
 except ImportError as e:
-    print(f'❌ DGL import failed: {e}')
+    print(f'ERROR: DGL import failed: {e}')
     exit(1)
 
 try:
     import e3nn
-    print(f'✅ E3NN: {e3nn.__version__}')
+    print(f'SUCCESS: E3NN: {e3nn.__version__}')
 except ImportError as e:
-    print(f'⚠️  E3NN import failed: {e}')
+    print(f'WARNING:  E3NN import failed: {e}')
 
-print('✅ Environment verification completed')
+print('SUCCESS: Environment verification completed')
 " || {
         print_error "Environment verification failed"
         return 1
