@@ -57,15 +57,49 @@ Thanks to Sergey Ovchinnikov, RFdiffusion is available as a [Google Colab Notebo
 
 We strongly recommend reading this README carefully before getting started with RFdiffusion, and working through some of the examples in the Colab Notebook.
 
-If you want to set up RFdiffusion locally, follow the steps below:
+## Quick Setup (Recommended)
 
-To get started using RFdiffusion, clone the repo:
-```
+For most users, our intelligent auto-detection system provides the simplest installation experience:
+
+```bash
+# Clone the repository
 git clone https://github.com/RosettaCommons/RFdiffusion.git
+cd RFdiffusion
+
+# One-command setup - automatically detects your hardware and creates optimal environment
+bash setup.sh
 ```
 
-You'll then need to download the model weights into the RFDiffusion directory.
+This will automatically:
+- Detect your GPU and CUDA configuration
+- Create an optimized conda environment 
+- Install all dependencies and model weights
+- Verify the installation works correctly
+
+**Supported Hardware:**
+- **Blackwell** (RTX 50xx series, B-series data center GPUs) - CUDA 12.8+ required
+- **Hopper** (H100, H200) - CUDA 11.8+ supported
+- **Ada Lovelace** (RTX 40xx series) - CUDA 11.8+ supported  
+- **Ampere** (RTX 30xx series, A100) - CUDA 11.0+ supported
+- **Older GPUs** (Volta, Turing, Pascal, Maxwell) - Automatic compatible configurations
+- **CPU-only systems** - Full support for systems without compatible GPUs
+
+**Setup Options:**
+```bash
+bash setup.sh              # Complete setup with models and tests (recommended)
+bash setup.sh --minimal    # Environment and packages only 
+bash setup.sh --force      # Force reinstall existing environment
+bash setup.sh --skip-detection  # Use stable configuration without hardware detection
 ```
+
+## Manual Installation (Advanced Users)
+
+If you prefer manual setup or need specific versions, follow the traditional approach:
+
+### Download Model Weights
+
+First, download the model weights into the RFdiffusion directory:
+```bash
 cd RFdiffusion
 mkdir models && cd models
 wget http://files.ipd.uw.edu/pub/RFdiffusion/6f5902ac237024bdd0c176cb93063dc4/Base_ckpt.pt
@@ -76,36 +110,59 @@ wget http://files.ipd.uw.edu/pub/RFdiffusion/76d00716416567174cdb7ca96e208296/In
 wget http://files.ipd.uw.edu/pub/RFdiffusion/5532d2e1f3a4738decd58b19d633b3c3/ActiveSite_ckpt.pt
 wget http://files.ipd.uw.edu/pub/RFdiffusion/12fc204edeae5b57713c5ad7dcb97d39/Base_epoch8_ckpt.pt
 
-Optional:
+# Optional models
 wget http://files.ipd.uw.edu/pub/RFdiffusion/f572d396fae9206628714fb2ce00f72e/Complex_beta_ckpt.pt
-
-# original structure prediction weights
 wget http://files.ipd.uw.edu/pub/RFdiffusion/1befcb9b28e2f778f53d47f18b7597fa/RF_structure_prediction_weights.pt
 ```
 
+Or use the automated script:
+```bash
+bash setup/download_models.sh models/
+```
 
 ### Conda Install SE3-Transformer
 
 Ensure that you have either [Anaconda or Miniconda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html) installed.
 
-You also need to install [NVIDIA's implementation of SE(3)-Transformers](https://developer.nvidia.com/blog/accelerating-se3-transformers-training-using-an-nvidia-open-source-model-implementation/) Here is how to install the NVIDIA SE(3)-Transformer code:
+You also need to install [NVIDIA's implementation of SE(3)-Transformers](https://developer.nvidia.com/blog/accelerating-se3-transformers-training-using-an-nvidia-open-source-model-implementation/). Here is how to install the NVIDIA SE(3)-Transformer code:
 
-```
-conda env create -f env/SE3nv.yml
+```bash
+# Choose environment based on your hardware:
+conda env create -f env/SE3nv.yml                      # Stable (recommended for most users)
+conda env create -f env/SE3nv-flexible.yml             # Modern hardware with flexible bounds
+conda env create -f env/SE3nv-pytorch27-cuda128.yml    # Bleeding-edge (RTX 40xx/50xx, H100)
+conda env create -f env/SE3nv-cpu.yml                  # CPU-only systems
 
-conda activate SE3nv
+# Activate the environment
+conda activate SE3nv  # or SE3nv-flexible, SE3nv-pytorch27-cuda128, SE3nv-cpu
+
+# Install SE3-Transformer
 cd env/SE3Transformer
 pip install --no-cache-dir -r requirements.txt
 python setup.py install
 cd ../.. # change into the root directory of the repository
+
+# Install RFdiffusion
 pip install -e . # install the rfdiffusion module from the root of the repository
 ```
+
 Anytime you run diffusion you should be sure to activate this conda environment by running the following command:
+```bash
+conda activate SE3nv  # or your chosen environment name
 ```
-conda activate SE3nv
+
+**Setup time:** Total setup should take less than 30 minutes on a standard desktop computer.
+
+### Hardware Compatibility Check
+
+To check what configuration is optimal for your hardware:
+```bash
+# Check your hardware compatibility
+python setup/detect_system_config.py
+
+# View full compatibility matrix  
+python setup/show_cuda_matrix.py --system
 ```
-Total setup should take less than 30 minutes on a standard desktop computer.
-Note: Due to the variation in GPU types and drivers that users have access to, we are not able to make one environment that will run on all setups. As such, we are only providing a yml file with support for CUDA 11.1 and leaving it to each user to customize it to work on their setups. This customization will involve changing the cudatoolkit and (possibly) the PyTorch version specified in the yml file.
 
 ---
 
@@ -133,7 +190,7 @@ In this section we will demonstrate how to run diffusion.
 
 
 ### Running the diffusion script
-The actual script you will execute is called `scripts/run_inference.py`. There are many ways to run it, governed by hydra configs.
+The actual script you will execute is called `inference/run_inference.py`. There are many ways to run it, governed by hydra configs.
 [Hydra configs](https://hydra.cc/docs/configure_hydra/intro/) are a nice way of being able to specify many different options, with sensible defaults drawn *directly* from the model checkpoint, so inference should always, by default, match training.
 What this means is that the default values in `config/inference/base.yml` might not match the actual values used during inference, with a specific checkpoint. This is all handled under the hood.
 
@@ -147,8 +204,8 @@ For this, we just need to specify three things:
 2. The location where we want to write files to
 3. The number of designs we want
 
-```
-./scripts/run_inference.py 'contigmap.contigs=[150-150]' inference.output_prefix=test_outputs/test inference.num_designs=10
+```bash
+python inference/run_inference.py 'contigmap.contigs=[150-150]' inference.output_prefix=test_outputs/test inference.num_designs=10
 ```
 
 Let's look at this in detail.
@@ -258,7 +315,7 @@ Hopefully, it's now obvious how you might make a binder with diffusion! Indeed, 
 If chain B is your target, then you could do it like this:
 
 ```
-./scripts/run_inference.py 'contigmap.contigs=[B1-100/0 100-100]' inference.output_prefix=test_outputs/binder_test inference.num_designs=10
+python inference/run_inference.py 'contigmap.contigs=[B1-100/0 100-100]' inference.output_prefix=test_outputs/binder_test inference.num_designs=10
 ```
 
 This will generate 100 residue long binders to residues 1-100 of chain B.
@@ -324,7 +381,7 @@ or e.g. 2:
 This will process either a single pdb, or a folder of pdbs, and output a secondary structure and adjacency pytorch file, ready to go into the model. For now (although this might not be necessary), you should also generate these files for the target protein (if you're doing PPI), and provide this to the model. You can then use these at inference as follows:
 
 ```
-./scripts/run_inference.py inference.output_prefix=./scaffold_conditioned_test/test scaffoldguided.scaffoldguided=True scaffoldguided.target_pdb=False scaffoldguided.scaffold_dir=./examples/ppi_scaffolds_subset
+python inference/run_inference.py inference.output_prefix=./scaffold_conditioned_test/test scaffoldguided.scaffoldguided=True scaffoldguided.target_pdb=False scaffoldguided.scaffold_dir=./examples/ppi_scaffolds_subset
 ```
 
 A few extra things:
@@ -401,7 +458,7 @@ We're going to switch gears from discussing PPI and look at another task at whic
 
 Here's an example:
 ```
-./scripts/run_inference.py --config-name symmetry  inference.symmetry=tetrahedral 'contigmap.contigs=[360]' inference.output_prefix=test_sample/tetrahedral inference.num_designs=1
+python inference/run_inference.py --config-name symmetry inference.symmetry=tetrahedral 'contigmap.contigs=[360]' inference.output_prefix=test_sample/tetrahedral inference.num_designs=1
 ```
 
 Here, we've specified a different `config` file (with `--config-name symmetry`). Because symmetric diffusion is quite different from the diffusion described above, we packaged a whole load of symmetry-related configs into a new file (see `configs/inference/symmetry.yml`). Using this config file now puts diffusion in `symmetry-mode`.
@@ -500,7 +557,7 @@ We have provided a Dockerfile at `docker/Dockerfile` to help run RFDiffusion on 
 1. Verify that the Docker daemon is running on your system with `docker info`. You can find Docker installation instructions for Mac, WIndows, and Linux in the [official Docker docs](https://docs.docker.com/get-docker/). You may also consider [Finch](https://github.com/runfinch/finch), the open source client for container development.
 1. Build the container image on your system with `docker build -f docker/Dockerfile -t rfdiffusion .`
 1. Create some folders on your file system with `mkdir $HOME/inputs $HOME/outputs $HOME/models`
-1. Download the RFDiffusion models with `bash scripts/download_models.sh $HOME/models`
+1. Download the RFDiffusion models with `bash setup/download_models.sh $HOME/models`
 1. Download a test file (or another of your choice) with `wget -P $HOME/inputs https://files.rcsb.org/view/5TPN.pdb`
 1. Run the container with the following command:
 
